@@ -11,4 +11,8 @@
 - [] Deve ser possível identificarmos o usuário entre as requisições;
 - [] O usuário só pode visualizar transações o qual ele criou;
 
-# Regras Não Funcionais (RNF)
+```
+npm run knex -- -help
+npm run knex -- migrate:latest
+npm run knex -- migrate:make <name_migration>
+```
