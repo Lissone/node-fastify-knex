@@ -1,13 +1,22 @@
-import fastify from 'fastify';
-import { env } from './env';
-import { transactionsRoutes } from './routes/transactions';
-import cookie from '@fastify/cookie';
+import { afterAll, beforeAll, test } from 'vitest';
+import request from 'supertest';
+import { app } from '../src/app';
 
-const app = fastify();
+beforeAll(async () => {
+  await app.ready();
+});
 
-app.register(cookie);
-app.register(transactionsRoutes, { prefix: 'transactions' });
+afterAll(async () => {
+  await app.close();
+});
 
-app.listen({ port: env.PORT }).then(() => {
-  console.log(`HTTP Server is running on port: ${env.PORT}`);
+test('user can create a new transaction', async () => {
+  await request(app.server)
+    .post('/transactions')
+    .send({
+      title: 'New transaction',
+      amount: 5000,
+      type: 'credit',
+    })
+    .expect(201);
 });
